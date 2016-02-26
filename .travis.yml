@@ -22,7 +22,7 @@ before_script:
   - curl -SL -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
   - unzip -d $HOME/bin terraform.zip
 
-script: python2 testing/build-cluster.py
+script: travis_wait python2 testing/build-cluster.py
 
 # Just once doesn't always work
 after_script:
