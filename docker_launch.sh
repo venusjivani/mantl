@@ -34,11 +34,11 @@ else
 fi
 
 # copy terraform sample file based on MANTL_PROVIDER env if user one doesn't exist
-if [ $(ls -l | grep .tf$ | wc -l) -gt 0 ]; then
+if [ $(find . -name "*.tf" | wc -l) -gt 0 ]; then
+	cp /local/*.tf /mantl/
+else
 	cp /mantl/terraform/"$MANTL_PROVIDER".sample.tf mantl.tf
 	cp /mantl/terraform/"$MANTL_PROVIDER".sample.tf $MANTL_CONFIG_DIR/mantl.tf
-else
-	cp /local/*.tf /mantl/
 fi
 
 terraform get
