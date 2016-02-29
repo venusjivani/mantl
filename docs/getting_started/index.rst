@@ -6,6 +6,8 @@ Getting Started
           continuing. This can be done simply by running ``pip install -r
           requirements.txt`` from the root of the project.
 
+          It also assumes you have a working [Terraform](https://www.terraform.io/downloads.html) installation.
+
 The Microservices Infrastructure project uses Ansible to bring up
 nodes and clusters. This generally means that you need three things:
 
@@ -24,12 +26,12 @@ platforms:
 .. toctree::
    :maxdepth: 1
 
-   openstack.rst
-   gce.rst
-   aws.rst
-   digitalocean.rst
-   vsphere.rst
-   softlayer.rst
+   `openstack.rst`_
+   `gce.rst`_
+   `aws.rst`_
+   `digitalocean.rst`_
+   `vsphere.rst`_
+   `softlayer.rst`_
 
 Setting up DNS
 --------------
@@ -39,7 +41,7 @@ You can set up your DNS records with Terraform:
 .. toctree::
    :maxdepth: 2
 
-   dns.rst
+   `dns.rst`_
 
 
 Setting up Authentication and Authorization
@@ -153,7 +155,7 @@ Below are guides customizing your deployment:
 .. toctree::
    :maxdepth: 1
 
-   ssh_users.rst  
+   ssh_users.rst
    playbook.rst
    dockerfile.rst
 
