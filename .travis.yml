@@ -4,6 +4,7 @@ env:
      - TERRAFORM_FILE=testing/aws.tf ANSIBLE_PLAYBOOK=sample.yml
      - TERRAFORM_FILE=testing/do.tf  ANSIBLE_PLAYBOOK=sample.yml
      - TERRAFORM_FILE=testing/gce.tf ANSIBLE_PLAYBOOK=sample.yml
+     - TERRAFORM_FILE=OPENSTACK ANSIBLE_PLAYBOOK=OPENSTACK
     # - TERRAFORM_FILE=testing/aws.tf ANSIBLE_PLAYBOOK=kubernetes.yml
     # - TERRAFORM_FILE=testing/do.tf  ANSIBLE_PLAYBOOK=kubernetes.yml
     # - TERRAFORM_FILE=testing/gce.tf ANSIBLE_PLAYBOOK=kubernetes.yml
@@ -12,9 +13,11 @@ install: "pip install -r requirements.txt"
 
 before_script:
   - python2 testing/test-health-checks.py
-  - ssh-keygen -N '' -f ~/.ssh/id_rsa && eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
-  - ln -sf $ANSIBLE_PLAYBOOK terraform.yml
-  - ln -sf $TERRAFORM_FILE terraform.tf
+  - if [ "$TERRAFORM_FILE" -ne "$OPENSTACK" ]; then ssh-keygen -N '' -f ~/.ssh/id_rsa; else echo $OS_KEY > ~/.id_rsa; fi
+  - eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
+  - if [ "$TERRAFORM_FILE" -eq "OPENSTACK" ]; then ssh-keyscan $OS_IP; fi
+  - if [ "$ANSIBLE_PLAYBOOK" -ne "OPENSTACK" ]; then ln -sf $ANSIBLE_PLAYBOOK terraform.yml; fi
+  - if [ "$TERRAFORM_FILE" -ne "OPENSTACK" ]; then ln -sf $TERRAFORM_FILE terraform.tf; fi
   - mkdir $HOME/bin && export PATH=$PATH:$HOME/bin
   - export TERRAFORM_VERSION=0.6.8
   # GCE doesn't like . in resource.name, so replace "." with "-"
@@ -22,12 +25,11 @@ before_script:
   - curl -SL -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
   - unzip -d $HOME/bin terraform.zip
 
-script: python2 testing/build-cluster.py
+script: if [ "$TERRAFORM_FILE" -ne "OPENSTACK" ]; then python2 testing/build-cluster.py; else ssh travis@$OS_IP 'python2 testing/build-cluster.py'; fi
 
 # Just once doesn't always work
 after_script:
-  - terraform destroy --force || true
-  - terraform destroy --force
+  - if [ "$TERRAFORM" -ne "OPENSTACK" ]; then travis_retry terraform destroy --force; else ssh travis@OS_IP 'terraform destroy --force'; fi
 
 after_success: echo "slack notification here"
 
