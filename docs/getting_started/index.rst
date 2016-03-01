@@ -24,14 +24,12 @@ The playbooks and roles in this project will work on whatever provider
 equivalent. However, here are some guides to get started on common
 platforms:
 
-.. toctree::
-
-   openstack.rst
-   gce.rst
-   aws.rst
-   digitalocean.rst
-   vsphere.rst
-   softlayer.rst
+   `openstack.rst`_
+   `gce.rst`_
+   `aws.rst`_
+   `digitalocean.rst`_
+   `vsphere.rst`_
+   `softlayer.rst`_
 
 Setting up DNS
 --------------
