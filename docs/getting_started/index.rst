@@ -12,7 +12,7 @@ Getting Started
 The Microservices Infrastructure project uses Ansible to bring up
 nodes and clusters. This generally means that you need three things:
 
-..:: 1. hosts to use as the base for your cluster
+     1. hosts to use as the base for your cluster
      2. an `inventory file`_ with the hosts you want to be modified. Mantl includes ansible inventory within its `Dynamic inventory for Terraform.py`_.
      3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_, which we recommend copying to ``mantl.yml`` for later customization.
 
@@ -24,18 +24,18 @@ The playbooks and roles in this project will work on whatever provider
 equivalent.
 
 The first step for provisioning with any platform is `generating ssh-keys`_ and `secure copying`_ both the public and private keys to your host.
-      ``ssh-keygen -t rsa -f /path/to/project/sshkey -C "sshkey"``
-      ``scp -P port /path/to/project/id_rsa* <user>@<host>:.ssh/``
+.. code-block:: shell
 
-Here are some guides to get started on common
-platforms:
+      ssh-keygen -t rsa -f /path/to/project/sshkey -C "sshkey"
+      scp -P port /path/to/project/id_rsa* <user>@<host>:.ssh/
 
-..:: `openstack.rst`_
-     `gce.rst`_
-     `aws.rst`_
-     `digitalocean.rst`_
-     `vsphere.rst`_
-     `softlayer.rst`_
+..Here are some guides to get started on common
+platforms:: `openstack.rst`_
+            `gce.rst`_
+            `aws.rst`_
+            `digitalocean.rst`_
+            `vsphere.rst`_
+            `softlayer.rst`_
 
 Setting up DNS
 --------------
