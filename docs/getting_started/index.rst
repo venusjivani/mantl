@@ -12,24 +12,30 @@ Getting Started
 The Microservices Infrastructure project uses Ansible to bring up
 nodes and clusters. This generally means that you need three things:
 
- 1. hosts to use as the base for your cluster
- 2. an `inventory file`_ with the hosts you want to be modified. Mantl includes ansible inventory within its `Dynamic inventory for Terraform.py`_.
- 3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_.
+..:: 1. hosts to use as the base for your cluster
+     2. an `inventory file`_ with the hosts you want to be modified. Mantl includes ansible inventory within its `Dynamic inventory for Terraform.py`_.
+     3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_, which we recommend copying to ``mantl.yml`` for later customization.
 
 Provisioning Cloud Hosts
 ------------------------
 
 The playbooks and roles in this project will work on whatever provider
 (or metal) you care to spin up, as long as it can run CentOS 7 or
-equivalent. However, here are some guides to get started on common
+equivalent.
+
+The first step for provisioning with any platform is `generating ssh-keys`_ and `secure copying`_ both the public and private keys to your host.
+      ``ssh-keygen -t rsa -f /path/to/project/sshkey -C "sshkey"``
+      ``scp -P port /path/to/project/id_rsa* <user>@<host>:.ssh/``
+
+Here are some guides to get started on common
 platforms:
 
-   `openstack.rst`_
-   `gce.rst`_
-   `aws.rst`_
-   `digitalocean.rst`_
-   `vsphere.rst`_
-   `softlayer.rst`_
+..:: `openstack.rst`_
+     `gce.rst`_
+     `aws.rst`_
+     `digitalocean.rst`_
+     `vsphere.rst`_
+     `softlayer.rst`_
 
 Setting up DNS
 --------------
@@ -47,8 +53,7 @@ Setting up Authentication and Authorization
 
 Before you begin, you'll want to run the ``security-setup`` script in the
 root directory. This will create and set passwords, authentication, and
-certificates. For more information, see the :doc:`security-setup
-<../security/security_setup>` documentation.
+certificates. For more information, see the `security-setup`_ documentation.
 
 Deploying software via Ansible
 ------------------------------
@@ -164,6 +169,8 @@ Below are guides customizing your deployment:
 .. _inventory file: http://docs.ansible.com/intro_inventory.html
 .. _Dynamic inventory for Terraform.py: https://github.com/CiscoCloud/mantl/tree/master/plugins/inventory
 .. _sample.yml: https://github.com/CiscoCloud/mantl/blob/master/sample.yml
+.. _generating ssh-keys: https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
+.. _secure copying: https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s2-openssh-using-scp.html
 .. _openstack.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/openstack.rst
 .. _gce.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/gce.rst
 .. _aws.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/aws.rst
@@ -173,6 +180,7 @@ Below are guides customizing your deployment:
 .. _dns.rst: https://github.com/CiscoCloud/mantl/blob/e53b7da545c1bdc71a5ceff7278ace5705117b41/docs/getting_started/dns.rst
 .. _playbook: http://docs.ansible.com/playbooks.html
 .. _GitHub project: https://github.com/CiscoCloud/nginx-mantlui
+.. _security-setup: https://github.com/CiscoCloud/mantl/blob/master/docs/security/security_setup.rst
 
 Restarting your deployment
 --------------------------
