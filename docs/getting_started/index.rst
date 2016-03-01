@@ -1,19 +1,20 @@
 Getting Started
 ===============
+##may remove:An explanation of the architecture and components of the Mantl project can be found in the `Mantl README`_.
 
 .. note:: This document assumes you have a `working Ansible
           installation`_. If you don't, install Ansible before
           continuing. This can be done simply by running ``pip install -r
           requirements.txt`` from the root of the project.
 
-          It also assumes you have a working [Terraform](https://www.terraform.io/downloads.html) installation.
+          It also assumes you have a working Terraform installation which you can download from `Terraform downloads`_.
 
 The Microservices Infrastructure project uses Ansible to bring up
 nodes and clusters. This generally means that you need three things:
 
  1. hosts to use as the base for your cluster
- 2. an `inventory file`_ with the hosts you want to be modified.
- 3. a playbook to show which components should go where.
+ 2. an `inventory file`_ with the hosts you want to be modified. Mantl includes ansible inventory within its `Dynamic inventory for Terraform.py`_.
+ 3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_.
 
 Provisioning Cloud Hosts
 ------------------------
@@ -69,7 +70,7 @@ inventory file, you can use the ``-i`` argument of ``ansible`` or
 
 .. code-block:: shell
 
-   ansible-playbook -i path/to/inventory -e @security.yml terraform.yml
+   ansible-playbook -i path/to/inventory -e @security.yml mantl.yml
 
 First, ping the servers to ensure they are reachable via ssh:
 
@@ -98,15 +99,15 @@ for verbose SSH debugging and try again to view the errors in more detail.
    more details.
 
 Next, deploy the software. First, you'll need to customize a playbook. A sample
-can be found at ``terraform.sample.yml`` in the root directory, you can find
+can be found at ``sample.yml`` in the root directory which you can copy to ``mantl.yml``. You can find
 more about customizing this at :doc:`playbook`. The main change you'll want
 to make is changing ``consul_acl_datacenter`` to your preferred ACL datacenter.
 If you only have one datacenter, you can remove this variable. Next, assuming
-you've placed the filled-out template at ``terraform.yml``:
+you've placed the filled-out template at ``mantl.yml``:
 
 .. code-block:: shell
 
-  ansible-playbook -e @security.yml terraform.yml
+  ansible-playbook -e @security.yml mantl.yml
 
 The deployment will probably take a while as all tasks are completed.
 
@@ -159,10 +160,21 @@ Below are guides customizing your deployment:
    playbook.rst
    dockerfile.rst
 
-.. _generated dynamically: http://docs.ansible.com/intro_dynamic_inventory.html
-.. _inventory file: http://docs.ansible.com/intro_inventory.html
-.. _playbook: http://docs.ansible.com/playbooks.html
+.. _Mantl README: https://github.com/CiscoCloud/mantl/blob/master/README.md
 .. _working Ansible installation: http://docs.ansible.com/intro_installation.html#installing-the-control-machine
+.. _generated dynamically: http://docs.ansible.com/intro_dynamic_inventory.html
+.. _Terraform downloads: https://www.terraform.io/downloads.html
+.. _inventory file: http://docs.ansible.com/intro_inventory.html
+.. _Dynamic inventory for Terraform: https://github.com/CiscoCloud/mantl/tree/master/plugins/inventory
+.. _sample.yml: https://github.com/CiscoCloud/mantl/blob/master/sample.yml
+.. _openstack.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/openstack.rst
+.. _gce.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/gce.rst
+.. _aws.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/aws.rst
+.. _digitalocean.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/digitalocean.rst
+.. _vsphere.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/vsphere.rst
+.. _softlayer.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/softlayer.rst
+.. _dns.rst: https://github.com/CiscoCloud/mantl/blob/e53b7da545c1bdc71a5ceff7278ace5705117b41/docs/getting_started/dns.rst
+.. _playbook: http://docs.ansible.com/playbooks.html
 .. _GitHub project: https://github.com/CiscoCloud/nginx-mantlui
 
 Restarting your deployment
