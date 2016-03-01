@@ -25,14 +25,13 @@ equivalent. However, here are some guides to get started on common
 platforms:
 
 .. toctree::
-   :maxdepth: 1
 
-   `openstack.rst`_
-   `gce.rst`_
-   `aws.rst`_
-   `digitalocean.rst`_
-   `vsphere.rst`_
-   `softlayer.rst`_
+   openstack.rst
+   gce.rst
+   aws.rst
+   digitalocean.rst
+   vsphere.rst
+   softlayer.rst
 
 Setting up DNS
 --------------
@@ -165,7 +164,7 @@ Below are guides customizing your deployment:
 .. _generated dynamically: http://docs.ansible.com/intro_dynamic_inventory.html
 .. _Terraform downloads: https://www.terraform.io/downloads.html
 .. _inventory file: http://docs.ansible.com/intro_inventory.html
-.. _Dynamic inventory for Terraform: https://github.com/CiscoCloud/mantl/tree/master/plugins/inventory
+.. _Dynamic inventory for Terraform.py: https://github.com/CiscoCloud/mantl/tree/master/plugins/inventory
 .. _sample.yml: https://github.com/CiscoCloud/mantl/blob/master/sample.yml
 .. _openstack.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/openstack.rst
 .. _gce.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/gce.rst
