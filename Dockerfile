@@ -1,6 +1,6 @@
 FROM python:2-alpine
 
-RUN apk add --update build-base git unzip
+RUN apk add --no-cache build-base git openssh unzip
 
 RUN git clone https://github.com/CiscoCloud/mantl /mantl
 
@@ -9,6 +9,7 @@ RUN pip install --upgrade pip \
 
 VOLUME /local
 ENV MANTL_CONFIG_DIR /local
+ENV SSH_KEY /root/.ssh/id_rsa
 
 ENV TERRAFORM_VERSION=0.6.12 TERRAFORM_STATE_ROOT=$MANTL_CONFIG_DIR
 RUN mkdir -p /tmp/terraform/ && \

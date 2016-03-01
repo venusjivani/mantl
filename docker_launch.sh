@@ -5,17 +5,17 @@ if [ -z "$MANTL_PROVIDER" ]; then
 	echo "mantl.readthedocs.org for provider"
 	exit 1
 fi
-	
-if [ -z "$MANTL_KEY" ]; then
-	echo "mantl.readthedocs.org for key"
-	exit 1
-fi
 
 # prompt for SSH if not found
-SSH_KEY=$MANTL_CONFIG_DIR/$MANTL_KEY
+mkdir -p $(dirname $SSH_KEY)
 if [ ! -f "$SSH_KEY" ]; then
-	echo "mantl.readthedocs.org for ssh"
+	ssh-keygen -N '' -f $SSH_KEY
+	cp $SSH_KEY* $MANTL_CONFIG_DIR/
+else
+	cp $MANTL_CONFIG_DIR/$(basename $SSH_KEY) $(dirname $SSH_KEY)
 fi
+
+eval $(ssh-agent) && ssh-add $SSH_KEY
 
 # gen security.yml if not found
 if [ ! -f $MANTL_CONFIG_DIR/security.yml ]; then
@@ -34,11 +34,11 @@ else
 fi
 
 # copy terraform sample file based on MANTL_PROVIDER env if user one doesn't exist
-if [ $(find . -name "*.tf" | wc -l) -gt 0 ]; then
-	cp /local/*.tf /mantl/
-else
+if [ "$(find $MANTL_CONFIG_DIR -name '*.tf')" == "" ]; then
 	cp /mantl/terraform/"$MANTL_PROVIDER".sample.tf mantl.tf
 	cp /mantl/terraform/"$MANTL_PROVIDER".sample.tf $MANTL_CONFIG_DIR/mantl.tf
+else
+	cp /local/*.tf /mantl/
 fi
 
 terraform get
