@@ -30,6 +30,9 @@
     name: "{{ item.mount }}"
     recurse: yes
     mode: 0755
+    # the 'ssh' in these variables is deprecated in Ansible 2.0
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
   with_items: glusterfs_volumes
   tags:
     - glusterfs
@@ -68,5 +71,19 @@
     dest: /etc/consul/glusterfs-mounts.json
   notify:
     - reload consul
+  tags:
+    - glusterfs
+
+- name: ensure correct owner for mount points
+  sudo: yes
+  file:
+    state: directory
+    name: "{{ item.mount }}"
+    recurse: yes
+    mode: 0755
+    # the 'ssh' in these variables is deprecated in Ansible 2.0
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+  with_items: glusterfs_volumes
   tags:
     - glusterfs
