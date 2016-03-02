@@ -14,46 +14,43 @@ nodes and clusters. This generally means that you need three things:
 
      1. hosts to use as the base for your cluster
      2. an `inventory file`_ with the hosts you want to be modified. Mantl includes ansible inventory within its `Dynamic inventory for Terraform.py`_.
-     3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_, which we recommend copying to ``mantl.yml`` for later customization.
+     3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_, which we recommend copying to ``mantl.yml``
+     for the possibility of later customization. You can read more about `playbooks`_ in the Ansible docs.
 
-Provisioning Cloud Hosts
-------------------------
+Preparing to provision Cloud Hosts
+----------------------------------
 
 The playbooks and roles in this project will work on whatever provider
 (or metal) you care to spin up, as long as it can run CentOS 7 or
 equivalent.
 
-The first step for provisioning with any platform is `generating ssh-keys`_ and `secure copying`_ both the public and private keys to your host.
-.. code-block:: shell
+There are several preparatory steps to provisioning the cloud hosts that are common to all providers:
 
-      ssh-keygen -t rsa -f /path/to/project/sshkey -C "sshkey"
-      scp -P port /path/to/project/id_rsa* <user>@<host>:.ssh/
+  1. The first step for provisioning with any platform is `generating ssh-keys`_ and `secure copying`_ both the public and private keys to your host.
 
-..Here are some guides to get started on common
-platforms:: `openstack.rst`_
-            `gce.rst`_
-            `aws.rst`_
-            `digitalocean.rst`_
-            `vsphere.rst`_
-            `softlayer.rst`_
+      ``ssh-keygen -t rsa -f /path/to/project/sshkey -C "sshkey"``..
+      ``scp -P port /path/to/project/id_rsa* <user>@<host>:.ssh/``
 
-Setting up DNS
---------------
+  2. You will also need to copy the *.tf of the platform you are using from `mantl/terraform/`_ to the root of the project. For example, ``mantl/terraform/openstack-modules.sample.tf`` will need to be copied to ``mantl/openstack-module-sample.tf`` The variables in the copied .tf file will need to be changed to your configuration.
+  .. note:: Greater than one .tf file in existance in the mantl directory will lead to errors upon deployment. If you work with more than one provider, extra .tf files will need to be renamed or moved.
 
-You can set up your DNS records with Terraform:
+  3. You'll want set up authentication and authorization by running the ``security-setup`` script in the
+  root directory. This will create and set passwords, authentication, and
+  certificates. For more information, see the `security-setup`_ documentation.
 
-.. toctree::
-   :maxdepth: 2
+  4. You can set up your DNS records with Terraform: `dns.rst`_
 
-   `dns.rst`_
+Provisioning Cloud Hosts
+------------------------
 
+Here are some guides specific to each of the common platforms that mantl supports:
 
-Setting up Authentication and Authorization
--------------------------------------------
-
-Before you begin, you'll want to run the ``security-setup`` script in the
-root directory. This will create and set passwords, authentication, and
-certificates. For more information, see the `security-setup`_ documentation.
+  `openstack.rst`_..
+  `gce.rst`_..
+  `aws.rst`_..
+  `digitalocean.rst`_..
+  `vsphere.rst`_..
+  `softlayer.rst`_..
 
 Deploying software via Ansible
 ------------------------------
@@ -63,8 +60,8 @@ Deploying software via Ansible
           can add an extra variable to the following commands, e.g.
           ``ansible -e ansible_python_interpreter=/path/to/python2``.
 
-In the following examples, we're going to assume you deployed hosts using
-Terraform. This project ships with a dynamic inventory file to read Terraform
+The following steps assume that you have provisioned your cloud host by taking the steps listed in one of the guides listed above. We're going to assume you deployed hosts using
+Terraform (all the way through terraform apply).This project ships with a dynamic inventory file to read Terraform
 ``.tfstate`` files. If you are running ansible from the root directory of the
 project, this inventory file will be used by default. If not, or to use a custom
 inventory file, you can use the ``-i`` argument of ``ansible`` or
@@ -74,15 +71,18 @@ inventory file, you can use the ``-i`` argument of ``ansible`` or
 
    ansible-playbook -i path/to/inventory -e @security.yml mantl.yml
 
-First, ping the servers to ensure they are reachable via ssh:
+**To deploy via ansible:**
+
+1. Ping the servers to ensure they are reachable via ssh:
 
 .. code-block:: shell
 
   ansible all -m ping
 
-If any servers fail to connect, check your connection by adding ``-vvvv``
+It may take a few minutes after terraform for the servers to be reachable. If any servers fail to connect, you can check your connection by adding ``-vvvv``
 for verbose SSH debugging and try again to view the errors in more detail.
 
+2. Upgrade packages
 .. warning::
 
    Due to updated packages in the recent CentOS-7 (1511) release, it is critical
@@ -100,9 +100,9 @@ for verbose SSH debugging and try again to view the errors in more detail.
    <https://github.com/CiscoCloud/mantl/issues/927>`_ for
    more details.
 
-Next, deploy the software. First, you'll need to customize a playbook. A sample
+3. Deploy the software. First, you'll need to customize a playbook. A sample
 can be found at ``sample.yml`` in the root directory which you can copy to ``mantl.yml``. You can find
-more about customizing this at :doc:`playbook`. The main change you'll want
+more about customizing this at `playbooks`_. The main change you'll want
 to make is changing ``consul_acl_datacenter`` to your preferred ACL datacenter.
 If you only have one datacenter, you can remove this variable. Next, assuming
 you've placed the filled-out template at ``mantl.yml``:
@@ -158,9 +158,9 @@ Below are guides customizing your deployment:
 .. toctree::
    :maxdepth: 1
 
-   ssh_users.rst
-   playbook.rst
-   dockerfile.rst
+   `ssh_users.rst`_
+   `playbook.rst`_
+   `dockerfile.rst`_
 
 .. _Mantl README: https://github.com/CiscoCloud/mantl/blob/master/README.md
 .. _working Ansible installation: http://docs.ansible.com/intro_installation.html#installing-the-control-machine
@@ -169,8 +169,10 @@ Below are guides customizing your deployment:
 .. _inventory file: http://docs.ansible.com/intro_inventory.html
 .. _Dynamic inventory for Terraform.py: https://github.com/CiscoCloud/mantl/tree/master/plugins/inventory
 .. _sample.yml: https://github.com/CiscoCloud/mantl/blob/master/sample.yml
+.. _playbooks: http://docs.ansible.com/ansible/playbooks.html
 .. _generating ssh-keys: https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
 .. _secure copying: https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s2-openssh-using-scp.html
+.. _mantl/terraform/: https://github.com/CiscoCloud/mantl/tree/master/terraform
 .. _openstack.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/openstack.rst
 .. _gce.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/gce.rst
 .. _aws.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/aws.rst
@@ -181,6 +183,9 @@ Below are guides customizing your deployment:
 .. _playbook: http://docs.ansible.com/playbooks.html
 .. _GitHub project: https://github.com/CiscoCloud/nginx-mantlui
 .. _security-setup: https://github.com/CiscoCloud/mantl/blob/master/docs/security/security_setup.rst
+.. _ssh_users.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/ssh_users.rst
+.. _playbook.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/playbook.rst
+.. _dockerfile.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/dockerfile.rst
 
 Restarting your deployment
 --------------------------
@@ -195,4 +200,4 @@ working correctly, use the ``playbooks/reboot-hosts.yml`` playbook.
 Using a Docker Container to Provision your Cluster
 ---------------------------------------------------
 
-You can also provision your cluster by running a docker container. See :doc:`dockerfile` for more information.
+You can also provision your cluster by running a docker container. See `dockerfile.rst`_ for more information.
