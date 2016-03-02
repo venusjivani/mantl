@@ -8,13 +8,15 @@ Getting Started
 
           It also assumes you have a working Terraform installation which you can download from `Terraform downloads`_.
 
+Information about Mantl with Ansible
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
 The Mantl project uses Ansible to bring up
 nodes and clusters. This generally means that you need three things:
 
 1. hosts to use as the base for your cluster
 2. an `inventory file`_ with the hosts you want to be modified. Mantl includes ansible inventory within its `Dynamic inventory for Terraform.py`_.
-3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_, which we recommend copying to ``mantl.yml``
-     for the possibility of later customization. You can read more about `playbooks`_ in the Ansible docs.
+3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_, which we recommend copying to ``mantl.yml`` for the possibility of later customization. You can read more about `playbooks`_ in the Ansible docs.
 
 Preparing to provision Cloud Hosts
 ----------------------------------
@@ -25,8 +27,8 @@ equivalent.
 
 There are several preparatory steps to provisioning the cloud hosts that are common to all providers:
 
-Step 1: SSH and SSL
->>>>>>>>>>>>>>>>>>>>>>>
+SSH and SSL
+>>>>>>>>>>>
 
 The first step for provisioning with any platform is `generating ssh-keys`_ and `secure copying`_ both the public and private keys to your host.
 
@@ -35,20 +37,20 @@ The first step for provisioning with any platform is `generating ssh-keys`_ and 
         ssh-keygen -t rsa -f /path/to/project/sshkey -C "sshkey"
         scp -P port /path/to/project/id_rsa* <user>@<host>:.ssh/
 
-Step 2: Copy .tf file
->>>>>>>>>>>>>>>>>>>>>
+Copy .tf file
+>>>>>>>>>>>>>
 
 You will also need to copy the .tf file of the platform you are using from `mantl/terraform/`_ to the root of the project. For example, ``mantl/terraform/openstack-modules.sample.tf`` will need to be copied to ``mantl/openstack-module-sample.tf``. The variables in the copied .tf file will need to be changed to your configuration.
 
     .. note:: Greater than one .tf file in existance in the mantl directory will lead to errors upon deployment. If you work with more than one provider, extra .tf files will need to be renamed or moved.
 
-Step 3: Run security-setup script
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Run security-setup
+>>>>>>>>>>>>>>>>>>
 
 You'll want set up authentication and authorization by running the ``security-setup`` script in the root directory. This will create and set passwords, authentication, and certificates. For more information, see the `security-setup`_ documentation.
 
-Step 4: Set up DNS records
->>>>>>>>>>>>>>>>>>>>>>>>>>
+Set up DNS records
+>>>>>>>>>>>>>>>>>>
 
 You can set up your DNS records with Terraform: `dns.rst`_
 
@@ -115,7 +117,7 @@ Upgrade packages:
 Deploy the software:
 >>>>>>>>>>>>>>>>>>>>
 
-   First, you'll need to customize a playbook. A sample can be found at ``sample.yml`` in the root directory which you can copy to ``mantl.yml``. You can find more about customizing this at `playbooks`_. The main change you'll want to make is changing ``consul_acl_datacenter`` to your preferred ACL datacenter. If you only have one datacenter, you can remove this variable. Next, assuming you've placed the filled-out template at ``mantl.yml``:
+   First, you will need to customize a playbook. A sample can be found at ``sample.yml`` in the root directory which you can copy to ``mantl.yml``. You can find more about customizing this at `playbooks`_. The main change you'll want to make is changing ``consul_acl_datacenter`` to your preferred ACL datacenter. If you only have one datacenter, you can remove this variable. Next, assuming you've placed the filled-out template at ``mantl.yml``:
 
     .. code-block:: shell
 
