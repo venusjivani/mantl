@@ -8,8 +8,8 @@ Getting Started
 
           It also assumes you have a working Terraform installation which you can download from `Terraform downloads`_.
 
-Information about Mantl with Ansible
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+General Information about Mantl with Ansible
+============================================
 
 The Mantl project uses Ansible to bring up
 nodes and clusters. This generally means that you need three things:
@@ -19,7 +19,7 @@ nodes and clusters. This generally means that you need three things:
 3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_, which we recommend copying to ``mantl.yml`` for the possibility of later customization. You can read more about `playbooks`_ in the Ansible docs.
 
 Preparing to provision Cloud Hosts
-----------------------------------
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 The playbooks and roles in this project will work on whatever provider
 (or metal) you care to spin up, as long as it can run CentOS 7 or
@@ -27,8 +27,8 @@ equivalent.
 
 There are several preparatory steps to provisioning the cloud hosts that are common to all providers:
 
-SSH and SSL
->>>>>>>>>>>
+Step 1: SSH and SSL
+-------------------
 
 The first step for provisioning with any platform is `generating ssh-keys`_ and `secure copying`_ both the public and private keys to your host.
 
@@ -37,25 +37,25 @@ The first step for provisioning with any platform is `generating ssh-keys`_ and 
         ssh-keygen -t rsa -f /path/to/project/sshkey -C "sshkey"
         scp -P port /path/to/project/id_rsa* <user>@<host>:.ssh/
 
-Copy .tf file
->>>>>>>>>>>>>
+Step 2: Copy .tf file
+---------------------
 
 You will also need to copy the .tf file of the platform you are using from `mantl/terraform/`_ to the root of the project. For example, ``mantl/terraform/openstack-modules.sample.tf`` will need to be copied to ``mantl/openstack-module-sample.tf``. The variables in the copied .tf file will need to be changed to your configuration.
 
     .. note:: Greater than one .tf file in existance in the mantl directory will lead to errors upon deployment. If you work with more than one provider, extra .tf files will need to be renamed or moved.
 
-Run security-setup
->>>>>>>>>>>>>>>>>>
+Step 3: Run security-setup
+--------------------------
 
 You'll want set up authentication and authorization by running the ``security-setup`` script in the root directory. This will create and set passwords, authentication, and certificates. For more information, see the `security-setup`_ documentation.
 
-Set up DNS records
->>>>>>>>>>>>>>>>>>
+Step 4: Set up DNS records
+--------------------------
 
 You can set up your DNS records with Terraform: `dns.rst`_
 
 Provisioning Cloud Hosts
-------------------------
+>>>>>>>>>>>>>>>>>>>>>>>>
 
 Here are some guides specific to each of the common platforms that mantl supports:
 
@@ -67,7 +67,7 @@ Here are some guides specific to each of the common platforms that mantl support
 - `softlayer.rst`_
 
 Deploying software via Ansible
-------------------------------
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 .. note:: Ansible requres a Python 2 binary. If yours is not at /usr/bin/python,
           please view the `Ansible FAQ <http://docs.ansible.com/faq.html>`_. You
@@ -81,15 +81,15 @@ project, this inventory file will be used by default. If not, or to use a custom
 inventory file, you can use the ``-i`` argument of ``ansible`` or
 ``ansible-playbook`` to specify the inventory file path. For example:
 
-.. code-block:: shell
+    .. code-block:: shell
 
-   ansible-playbook -i path/to/inventory -e @security.yml mantl.yml
+       ansible-playbook -i path/to/inventory -e @security.yml mantl.yml
 
 Steps to deploying via ansible:
--------------------------------
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-Ping the servers to ensure they are reachable via ssh:
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Step 1: Ping the servers to ensure they are reachable via ssh:
+--------------------------------------------------------------
 
     .. code-block:: shell
 
@@ -97,8 +97,8 @@ Ping the servers to ensure they are reachable via ssh:
 
    It may take a few minutes after terraform for the servers to be reachable. If any servers fail to connect, you can check your connection by adding ``-vvvv`` for verbose SSH debugging and try again to view the errors in more detail.
 
-Upgrade packages:
->>>>>>>>>>>>>>>>>
+Step 2: Upgrade packages:
+-------------------------
 
     .. warning::
 
@@ -114,8 +114,8 @@ Upgrade packages:
    failures, particularly around Consul. See issues `907`_ and
    `927`_ for more details.
 
-Deploy the software:
->>>>>>>>>>>>>>>>>>>>
+Step 3: Deploy the software:
+----------------------------
 
    First, you will need to customize a playbook. A sample can be found at ``sample.yml`` in the root directory which you can copy to ``mantl.yml``. You can find more about customizing this at `playbooks`_. The main change you'll want to make is changing ``consul_acl_datacenter`` to your preferred ACL datacenter. If you only have one datacenter, you can remove this variable. Next, assuming you've placed the filled-out template at ``mantl.yml``:
 
@@ -126,7 +126,7 @@ Deploy the software:
     The deployment will probably take a while as all tasks are completed.
 
 Checking your deployment
-------------------------
+>>>>>>>>>>>>>>>>>>>>>>>>
 
 Once your deployment has completed, you will be able to access the Mantl UI
 in your browser by connecting to one of the control nodes.
