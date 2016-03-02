@@ -15,6 +15,7 @@
     "--elasticsearchExecutorCpu", "{{ elasticsearch_executor_cpu }}",
     "--elasticsearchDisk", "{{ elasticsearch_disk }}",
     "--frameworkUseDocker", "{{ framework_use_docker }}",
+    "--executorImage", "{{ elasticsearch_docker_image }}",
     "--elasticsearchClusterName", "{{ elasticsearch_cluster_name }}",
     "--webUiPort", "{{ framework_ui_port }}",
     "--frameworkName", "{{ framework_name }}"{% if do_mesos_auth %},
