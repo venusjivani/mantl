@@ -13,11 +13,11 @@ install: "pip install -r requirements.txt"
 
 before_script:
   - python2 testing/test-health-checks.py
-  - if [ "$TERRAFORM_FILE" -ne "$OPENSTACK" ]; then ssh-keygen -N '' -f ~/.ssh/id_rsa; else echo $OS_KEY > ~/.id_rsa; fi
+  - if [ "$TERRAFORM_FILE" != "OPENSTACK" ]; then ssh-keygen -N '' -f ~/.ssh/id_rsa; else echo $OS_KEY > ~/.id_rsa; fi
   - eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
-  - if [ "$TERRAFORM_FILE" -eq "OPENSTACK" ]; then ssh-keyscan $OS_IP; fi
-  - if [ "$ANSIBLE_PLAYBOOK" -ne "OPENSTACK" ]; then ln -sf $ANSIBLE_PLAYBOOK terraform.yml; fi
-  - if [ "$TERRAFORM_FILE" -ne "OPENSTACK" ]; then ln -sf $TERRAFORM_FILE terraform.tf; fi
+  - if [ "$TERRAFORM_FILE" == "OPENSTACK" ]; then ssh-keyscan $OS_IP; fi
+  - if [ "$ANSIBLE_PLAYBOOK" != "OPENSTACK" ]; then ln -sf $ANSIBLE_PLAYBOOK terraform.yml; fi
+  - if [ "$TERRAFORM_FILE" != "OPENSTACK" ]; then ln -sf $TERRAFORM_FILE terraform.tf; fi
   - mkdir $HOME/bin && export PATH=$PATH:$HOME/bin
   - export TERRAFORM_VERSION=0.6.8
   # GCE doesn't like . in resource.name, so replace "." with "-"
@@ -26,11 +26,11 @@ before_script:
   - unzip -d $HOME/bin terraform.zip
 
 #NOTE: We will need to work all this logic into the docker container
-script: if [ "$TERRAFORM_FILE" -ne "OPENSTACK" ]; then python2 testing/build-cluster.py; else ssh travis@$OS_IP 'python2 testing/build-cluster.py'; fi
+script: if [ "$TERRAFORM_FILE" != "OPENSTACK" ]; then python2 testing/build-cluster.py; else ssh travis@$OS_IP 'python2 testing/build-cluster.py'; fi
 
 # Just once doesn't always work
 after_script:
-  - if [ "$TERRAFORM" -ne "OPENSTACK" ]; then travis_retry terraform destroy --force; else ssh travis@OS_IP 'terraform destroy --force'; fi
+  - if [ "$TERRAFORM" != "OPENSTACK" ]; then travis_retry terraform destroy --force; else ssh travis@OS_IP 'terraform destroy --force'; fi
 
 after_success: echo "slack notification here"
 
