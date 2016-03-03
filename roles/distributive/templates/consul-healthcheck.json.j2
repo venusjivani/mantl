@@ -1,0 +1,9 @@
+{
+    "check": {
+        "id": "distributive-{{ current_role }}-checks",
+        "name": "{{ current_role }} Distributive Mantl Health Checks",
+        "script": "/bin/distributive -f /etc/distributive.d/distributive-{{ current_role }}.json -d '' --verbosity=info",
+        "interval": "{{ distributive_interval }}",
+        "timeout": "{{ distributive_interval }}"
+    }
+}

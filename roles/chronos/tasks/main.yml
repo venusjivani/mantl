@@ -156,5 +156,3 @@
     - reload consul
   tags:
     - chronos
-
-- include: distributive.yml
