@@ -7,8 +7,8 @@ if [ -z "$MANTL_PROVIDER" ]; then
 fi
 
 # SSH
-if [ ! -f "/root/.ssh/id_rsa" ]; then
-	ssh-keygen -N '' -f /root/.ssh/id_rsa
+if [ ! -f "$SSH_KEY" ]; then
+	ssh-keygen -N '' -f $SSH_KEY
 else
 	cp $MANTL_CONFIG_DIR/$(basename $SSH_KEY) $(dirname $SSH_KEY)
 fi
