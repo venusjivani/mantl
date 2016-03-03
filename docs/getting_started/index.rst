@@ -75,7 +75,7 @@ Deploying software via Ansible
           ``ansible -e ansible_python_interpreter=/path/to/python2``.
 
 The following steps assume that you have provisioned your cloud host by taking the steps listed in one of the guides listed above. We're going to assume you deployed hosts using
-Terraform (all the way through terraform apply).This project ships with a dynamic inventory file to read Terraform
+Terraform (all the way through terraform apply). This project ships with a dynamic inventory file to read Terraform
 ``.tfstate`` files. If you are running ansible from the root directory of the
 project, this inventory file will be used by default. If not, or to use a custom
 inventory file, you can use the ``-i`` argument of ``ansible`` or
@@ -88,8 +88,19 @@ inventory file, you can use the ``-i`` argument of ``ansible`` or
 Steps to deploying via ansible:
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-Step 1: Ping the servers to ensure they are reachable via ssh:
---------------------------------------------------------------
+Step 1: Add password to the ssh-agent
+-------------------------------------
+
+For the next steps, you may want to add your password to the ssh-agent to maintain a continuous login with your host. One way to do this:
+
+    .. code-block:: shell
+
+        eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
+
+    You will be prompted for you host login password.
+
+Step 2: Ping the servers to ensure they are reachable via ssh
+-------------------------------------------------------------
 
     .. code-block:: shell
 
@@ -97,8 +108,8 @@ Step 1: Ping the servers to ensure they are reachable via ssh:
 
    It may take a few minutes after terraform for the servers to be reachable. If any servers fail to connect, you can check your connection by adding ``-vvvv`` for verbose SSH debugging and try again to view the errors in more detail.
 
-Step 2: Upgrade packages:
--------------------------
+Step 3: Upgrade packages
+------------------------
 
     .. warning::
 
@@ -114,8 +125,8 @@ Step 2: Upgrade packages:
    failures, particularly around Consul. See issues `907`_ and
    `927`_ for more details.
 
-Step 3: Deploy the software:
-----------------------------
+Step 4: Deploy the software
+---------------------------
 
    First, you will need to customize a playbook. A sample can be found at ``sample.yml`` in the root directory which you can copy to ``mantl.yml``. You can find more about customizing this at `playbooks`_. The main change you'll want to make is changing ``consul_acl_datacenter`` to your preferred ACL datacenter. If you only have one datacenter, you can remove this variable. Next, assuming you've placed the filled-out template at ``mantl.yml``:
 
@@ -176,7 +187,7 @@ Below are guides customizing your deployment:
 .. _generated dynamically: http://docs.ansible.com/intro_dynamic_inventory.html
 .. _Terraform downloads: https://www.terraform.io/downloads.html
 .. _inventory file: http://docs.ansible.com/intro_inventory.html
-.. _Dynamic inventory for Terraform.py: https://github.com/CiscoCloud/mantl/tree/master/plugins/inventory
+.. _Dynamic inventory for Terraform.py: https://github.com/CiscoCloud/mantl/blob/master/plugins/inventory/terraform.py
 .. _sample.yml: https://github.com/CiscoCloud/mantl/blob/master/sample.yml
 .. _playbooks: http://docs.ansible.com/ansible/playbooks.html
 .. _generating ssh-keys: https://www.centos.org/docs/5/html/5.2/Deployment_Guide/s3-openssh-rsa-keys-v2.html
