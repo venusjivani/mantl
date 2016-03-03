@@ -35,7 +35,7 @@ else
 	cp /local/*.tf /mantl/
 fi
 
-terraform get -state=$TERRAFORM_STATE
+terraform get
 terraform apply -state=$TERRAFORM_STATE
 ansible-playbook /mantl/playbooks/wait-for-hosts.yml --private-key $SSH_KEY
 ansible-playbook mantl.yml -e @"$MANTL_CONFIG_DIR/security.yml" --private-key $SSH_KEY
