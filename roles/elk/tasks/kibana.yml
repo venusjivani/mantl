@@ -1,0 +1,45 @@
+---
+- name: create kibana configuration directory
+  sudo: yes
+  file:
+    path: /etc/kibana
+    state: directory
+    mode: 0755
+  tags:
+    - elk
+
+- name: create kibana configuration file
+  sudo: yes
+  file:
+    path: /etc/kibana/kibana.yml
+    state: touch
+    mode: 0755
+  tags:
+    - elk
+
+- name: deploy kibana consul-template configuration
+  sudo: yes
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - src: kibana.cfg
+      dest: /etc/consul-template/config.d
+    - src: kibana.yml.tmpl
+      dest: /etc/consul-template/templates/kibana.yml.tmpl
+    - src: kibana-dashboard.cfg
+      dest: /etc/consul-template/config.d
+  notify:
+    - reload consul-template
+  tags:
+    - elk
+
+- name: deploy kibana create dashboard script
+  sudo: yes
+  template:
+    src: kibana-create-dashboard.sh.tmpl.j2
+    dest: /etc/consul-template/templates/kibana-create-dashboard.sh.tmpl
+  notify:
+    - reload consul-template
+  tags:
+    - elk

@@ -1,0 +1,42 @@
+{
+    "id": "/kibana",
+    "cpus": {{ kibana_cpu }},
+    "mem": {{ kibana_ram }},
+    "instances": 1,
+    "uris": [],
+    "container": {
+        "type": "DOCKER",
+        "docker": {
+            "network": "BRIDGE",
+            "image": "{{ kibana_image }}:{{ kibana_image_tag }}",
+            "portMappings": [{
+                "containerPort": 5601,
+                "hostPort": 0,
+                "protocol": "tcp"
+            }]
+        },
+        "volumes": [
+            {
+                "containerPath": "/etc/kibana/kibana.yml",
+                "hostPath": "/etc/kibana/kibana.yml",
+                "mode": "RO"
+            }
+        ]
+    },
+    "labels": {
+        "traefik.enable": "false",
+        "check_script": "if [[ \"$(curl --silent --insecure --retry 2 --connect-timeout 5 --max-time 5 http://{host}:{port}/api/status | jq -r .status.overall.state)\" != \"green\" ]]; then echo Kibana is not healthy.; exit 1; fi;",
+        "check_interval": "30s"
+    },
+    "healthChecks": [
+        {
+            "gracePeriodSeconds": 120,
+            "intervalSeconds": 10,
+            "maxConsecutiveFailures": 6,
+            "path": "/",
+            "portIndex": 0,
+            "protocol": "HTTP",
+            "timeoutSeconds": 5
+        }
+    ]
+}

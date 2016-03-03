@@ -3,9 +3,7 @@
   "cpus": {{ elasticsearch_cpu }},
   "mem": {{ elasticsearch_ram }},
   "instances": 1,
-  "uris": [
-    "{{ framework_download_url }}"
-  ],
+  "uris": ["{{ framework_download_url }}"],
   "args": [ "java", "-jar", "scheduler-{{ framework_version }}.jar",
     "--zookeeperMesosUrl", "{{ mesos_zk }}",
     "--elasticsearchNodes", "{{ elasticsearch_nodes }}",

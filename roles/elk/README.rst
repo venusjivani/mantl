@@ -9,16 +9,15 @@ cluster. Kibana is available to visualize and analyze this data.
 
 This role runs an Elasticsearch cluster via the `Elasticsearch Mesos Framework
 <https://github.com/mesos/elasticsearch>`_. It also configures Logstash on all
-nodes to forward logs to that cluster. Finally, Kibana is installed on all
-control nodes and is configured to talk to Elasticsearch and includes a default
-sample dashboard.
+nodes to forward logs to that cluster. Finally, Kibana is run via Marathon and
+is configured to talk to Elasticsearch and includes a default sample dashboard.
 
 Installation
 ------------
 
 As of 1.0, the ELK stack is distributed as an addon for Mantl. After a
-successful initial run (from your customized ``terraform.sample.yml``), install
-it with ``ansible-playbook -e @security.yml addons/elk.yml``.
+successful initial run (from your customized ``sample.yml``), install
+it with ``ansible-playbook -i plugins/inventory/terraform.py -e @security.yml addons/elk.yml``.
 
 Accessing User Interfaces
 -------------------------
@@ -103,14 +102,14 @@ installed to follow this example.
 Uninstalling Kibana
 -------------------
 
-While we currently do not have an uninstall process for Kibana, it is easy to
-disable it on your cluster. The following commands can be run to disable Kibana:
+You can uninstall Kibana just like any Marathon app (using ``$url`` as defined
+above in the ElasticSearch uninstall script:
 
 .. code-block:: shell
 
-   ansible 'role=control' -s -m shell -a 'consul-cli service-deregister kibana'
-   ansible 'role=control' -s -m shell -a 'rm /etc/consul/kibana.json'
-   ansible 'role=control' -s -m service -a 'name=kibana enabled=no state=stopped'
+   curl -sku 'admin:password' -X DELETE $url/marathon/v2/apps/elasticsearch
+
+Note that this doesn't remove the Kibana configuration templates.
 
 Variables
 ---------
@@ -163,13 +162,13 @@ Variables
 
 .. data:: framework_version
 
-   The version of the Elasticsearch mesos framework. 
+   The version of the Elasticsearch mesos framework.
 
    default: "0.7.1"
 
 .. data:: framework_name
 
-   The name of the Elasticsearch mesos framework. 
+   The name of the Elasticsearch mesos framework.
 
    default: "elasticsearch"
 
@@ -188,13 +187,13 @@ Variables
 
 .. data:: kibana_image
 
-   The name of the Kibana docker image. 
+   The name of the Kibana docker image.
 
    default: kibana
 
 .. data:: kibana_image_tag
 
-   The tag of the Kibana docker image. 
+   The tag of the Kibana docker image.
 
    default: 4.3.1
 
