@@ -11,6 +11,7 @@ env:
 install: "pip install -r requirements.txt"
 
 before_script:
+  - if [ "git diff --name-only $TRAVIS_COMMIT_RANGE | grep -v -e 'md$' -e 'rst$'" == "" ]; then return 1; fi
   - python2 testing/test-health-checks.py
   - ssh-keygen -N '' -f ~/.ssh/id_rsa && eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
   - ln -sf $ANSIBLE_PLAYBOOK terraform.yml
