@@ -1,13 +1,13 @@
 Getting Started
 ===============
 
-.. Note:: This document assumes you have a `working Ansible
+.. note:: This document assumes you have a `working Ansible
           installation`_. If you don't, install Ansible before
           continuing. This can be done simply by running ``pip install -r
           requirements.txt`` from the root of the project.
 
-          It also assumes you have a working Terraform installation which you
-          can download from `Terraform downloads`_.
+          It also assumes you have a working Terraform installation. You
+          can download Terraform from `Terraform downloads`_.
 
 General Information about Mantl with Ansible
 ============================================
@@ -24,14 +24,14 @@ nodes and clusters. This generally means that you need three things:
    the `Ansible docs`_.
 
 Preparing to provision Cloud Hosts
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The playbooks and roles in this project will work on whatever provider
 (or metal) you care to spin up, as long as it can run CentOS 7 or
 equivalent.
 
 Your hosts will have to be accessible with your SSH key. If you're unfamiliar
-with SSH keys, please read `this blog post
+with SSH keys, please read `DigitalOcean's guide to setting up SSH keys
 <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_.
 
 There are several preparatory steps to provisioning the cloud hosts that are
@@ -40,7 +40,7 @@ common to all providers:
 Step 1: Copy .tf file
 ---------------------
 
-You will also need to copy the .tf file of the platform you are using from
+You will need to copy the .tf file of the platform you are using from
 `mantl/terraform/`_ to the root of the project. For example,
 ``mantl/terraform/openstack-modules.sample.tf`` will need to be copied to
 ``mantl/openstack-module-sample.tf``. The variables in the copied .tf file will
@@ -49,13 +49,13 @@ need to be changed to your configuration.
 .. note::
 
     More than one .tf file in the mantl directory will lead to errors upon
-    deployment. If you work with more than one provider, extra .tf files will
-    need to be renamed or moved.
+    deployment. Since Mantl initially does not support multiple datacenters, extra .tf files will
+ +    need to be renamed or moved. If you would like to add multiple datacenters see the `Consul docs`_ for more information.
 
 Step 2: Run security-setup
 --------------------------
 
-Running the ``security-setup`` script in the root directory will create and set
+Running the ``security-setup`` script in the root directory will set
 up passwords, authentication, and certificates. For more information, see the
 `security-setup`_ documentation.
 
@@ -65,7 +65,7 @@ Step 3: Set up DNS records
 You can set up your DNS records with Terraform: `dns.rst`_
 
 Provisioning Cloud Hosts
->>>>>>>>>>>>>>>>>>>>>>>>
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Here are some guides specific to each of the platforms that Mantl supports:
 
@@ -77,7 +77,7 @@ Here are some guides specific to each of the platforms that Mantl supports:
 - `softlayer.rst`_
 
 Deploying software via Ansible
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. note:: Ansible requres a Python 2 binary. If yours is not at /usr/bin/python,
           please view the `Ansible FAQ <http://docs.ansible.com/faq.html>`_. You
@@ -85,11 +85,10 @@ Deploying software via Ansible
           ``ansible -e ansible_python_interpreter=/path/to/python2``.
 
 The following steps assume that you have provisioned your cloud host by taking
-the steps listed in one of the guides listed above. We're going to assume you
-deployed hosts using Terraform.
+the steps listed in one of the guides above.
 
 This project ships with a dynamic inventory file to read Terraform ``.tfstate``
-files, `terraform.py`_.  If you are not running Ansible from the root directory,
+files, `terraform.py`_.  If you are not running Ansible from the root directory
 or would like to use a custom inventory file, you can use the ``-i`` argument
 of ``ansible`` or ``ansible-playbook`` to specify the inventory file path.
 
@@ -98,7 +97,7 @@ of ``ansible`` or ``ansible-playbook`` to specify the inventory file path.
        ansible-playbook -i path/to/inventory -e @security.yml mantl.yml
 
 Steps to deploying via Ansible:
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Step 1: Add password to the ssh-agent
 -------------------------------------
@@ -107,20 +106,16 @@ For the next steps, you may want to `add your password to the ssh-agent
 <https://wiki.archlinux.org/index.php?title=SSH_keys&redirect=no#SSH_agents>`_
 avoid re-entering your password.
 
-.. code-block:: shell
-
-        eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
-
 Step 2: Ping the servers to ensure they are reachable via ssh
 -------------------------------------------------------------
 
 .. code-block:: shell
 
-        ansible all -i plugins/inventory/terraform.py -m ping
+        ansible all -m ping
 
 It may take a few minutes after running terraform for the servers to be
 reachable. If any servers fail to connect, you can check your connection by
-adding ``-vvvv`` for verbose SSH debugging and try again to view the errors in
+adding ``-vvvv`` for verbose SSH debugging to view the errors in
 more detail.
 
 Step 3: Upgrade packages
@@ -134,7 +129,7 @@ Step 3: Upgrade packages
 
 .. code-block:: shell
 
-        ansible-playbook -e 'serial=0' playbooks/upgrade-packages.yml
+        ansible-playbook playbooks/upgrade-packages.yml
 
 If you neglect to upgrade packages, you will likely experience multiple
 failures, particularly around Consul. See issues `907`_ and `927`_ for more
@@ -158,7 +153,7 @@ Next, assuming you've placed the filled-out template at ``mantl.yml``:
 The deployment will probably take a while as all tasks are completed.
 
 Checking your deployment
->>>>>>>>>>>>>>>>>>>>>>>>
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Once your deployment has completed, you will be able to access the Mantl UI
 in your browser by connecting to one of the control nodes.
@@ -181,8 +176,8 @@ If you need the IP address of your nodes, you can use ``terraform.py``:
 
 When you enter a control node's IP address into your browser, you'll likely get
 prompted about invalid security certificates (if you have SSL/TLS turned on).
-Follow your browser's instructions on how to access a site without a valid
-cert. Then, you will be presented with a basic access authentication prompt.
+Follow your browser's instructions on how to access a site without valid
+certs. Then, you will be presented with a basic access authentication prompt.
 The username and password for this are the ones generated by ``security-setup``,
 and are stored in ``security.yml`` if you forgot them.
 
@@ -225,6 +220,7 @@ Below are guides customizing your deployment:
 .. _playbook: http://docs.ansible.com/playbooks.html
 .. _GitHub project: https://github.com/CiscoCloud/nginx-mantlui
 .. _security-setup: https://github.com/CiscoCloud/mantl/blob/master/docs/security/security_setup.rst
+.. _Consul docs: https://www.consul.io/docs/guides/datacenters.html
 .. _ssh_users.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/ssh_users.rst
 .. _playbook.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/playbook.rst
 .. _dockerfile.rst: https://github.com/CiscoCloud/mantl/blob/master/docs/getting_started/dockerfile.rst
