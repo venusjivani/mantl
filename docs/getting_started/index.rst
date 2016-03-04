@@ -7,11 +7,16 @@ Getting Started
           requirements.txt`` from the root of the project.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
           It also assumes you have a working Terraform installation. You can download Terraform from `Terraform downloads`_.
 =======
           It also assumes you have a working Terraform installation. You
           can download Terraform from `Terraform downloads`_.
 >>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
+=======
+          It also assumes you have a working Terraform installation. You
+          can download Terraform from `Terraform downloads`_.
+>>>>>>> docs/getstartedit
 
 General Information about Mantl with Ansible
 ============================================
@@ -76,7 +81,12 @@ Here are some guides specific to each of the common platforms that mantl support
 =======
 
 Your hosts will have to be accessible with your SSH key. If you're unfamiliar
+<<<<<<< HEAD
 with SSH keys, please read `DigitalOcean's guide to setting up SSH keys <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_.
+=======
+with SSH keys, please read `DigitalOcean's guide to setting up SSH keys
+<https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_.
+>>>>>>> docs/getstartedit
 
 There are several preparatory steps to provisioning the cloud hosts that are
 common to all providers:
@@ -94,7 +104,11 @@ need to be changed to your configuration.
 
     More than one .tf file in the mantl directory will lead to errors upon
     deployment. Since Mantl initially does not support multiple datacenters, extra .tf files will
+<<<<<<< HEAD
     need to be renamed or moved. If you like to add multiple datacenters see the `Consul docs`_ for more information.
+=======
+ +    need to be renamed or moved. If you would like to add multiple datacenters see the `Consul docs`_ for more information.
+>>>>>>> docs/getstartedit
 
 Step 2: Run security-setup
 --------------------------
@@ -162,6 +176,7 @@ For the next steps, you may want to `add your password to the ssh-agent
 avoid re-entering your password.
 >>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 
+<<<<<<< HEAD
        ansible-playbook -i path/to/inventory -e @security.yml mantl.yml
 
 <<<<<<< HEAD
@@ -171,6 +186,8 @@ Steps to deploying via ansible:
 Step 1: Add password to the ssh-agent
 -------------------------------------
 
+=======
+>>>>>>> docs/getstartedit
 Step 2: Ping the servers to ensure they are reachable via ssh
 -------------------------------------------------------------
 
@@ -230,7 +247,7 @@ Step 3: Upgrade packages
 
 .. code-block:: shell
 
-        ansible-playbook -e 'serial=0' playbooks/upgrade-packages.yml
+        ansible-playbook playbooks/upgrade-packages.yml
 
 If you neglect to upgrade packages, you will likely experience multiple
 failures, particularly around Consul. See issues `907`_ and `927`_ for more
