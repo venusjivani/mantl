@@ -50,7 +50,7 @@ need to be changed to your configuration.
 
     More than one .tf file in the mantl directory will lead to errors upon
     deployment. Since Mantl initially does not support multiple datacenters, extra .tf files will
- +    need to be renamed or moved. If you would like to add multiple datacenters see the `Consul docs`_ for more information.
+    need to be renamed or moved. If you would like to add multiple datacenters see the `Consul docs`_ for more information.
 
 Step 2: Run security-setup
 --------------------------
