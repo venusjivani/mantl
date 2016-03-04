@@ -6,17 +6,8 @@ Getting Started
           continuing. This can be done simply by running ``pip install -r
           requirements.txt`` from the root of the project.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-          It also assumes you have a working Terraform installation. You can download Terraform from `Terraform downloads`_.
-=======
           It also assumes you have a working Terraform installation. You
           can download Terraform from `Terraform downloads`_.
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
-=======
-          It also assumes you have a working Terraform installation. You
-          can download Terraform from `Terraform downloads`_.
->>>>>>> docs/getstartedit
 
 General Information about Mantl with Ansible
 ============================================
@@ -24,11 +15,6 @@ General Information about Mantl with Ansible
 The Mantl project uses Ansible to bring up
 nodes and clusters. This generally means that you need three things:
 
-<<<<<<< HEAD
-1. hosts to use as the base for your cluster
-2. an `inventory file`_ with the hosts you want to be modified. Mantl includes ansible inventory within its `Dynamic inventory for Terraform.py`_.
-3. a playbook to show which components should go where. Mantl organizes its components in `sample.yml`_, which we recommend copying to ``mantl.yml`` for the possibility of later customization. You can read more about `playbooks`_ in the `Ansible docs`_.
-=======
 1. Hosts to use as the base for your cluster
 2. An `inventory file`_ with the hosts you want to be modified. Mantl includes
    an Ansible inventory for terraformed hosts, `terraform.py`_.
@@ -36,7 +22,6 @@ nodes and clusters. This generally means that you need three things:
    in `sample.yml`_, which we recommend copying to ``mantl.yml`` for the
    possibility of later customization. You can read more about `playbooks`_ in
    the `Ansible docs`_.
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 
 Preparing to provision Cloud Hosts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -44,49 +29,10 @@ Preparing to provision Cloud Hosts
 The playbooks and roles in this project will work on whatever provider
 (or metal) you care to spin up, as long as it can run CentOS 7 or
 equivalent.
-<<<<<<< HEAD
-
-There are several preparatory steps to provisioning the cloud hosts that are common to all providers:
-
-Step 1: SSH and SSL
--------------------
-
-The first step for provisioning, if you have not already, is  `generating ssh-keys`_.
-
-   .. code-block:: shell
-
-        ssh-keygen -t rsa -f /path/to/project/sshkey -C "sshkey"
-
-Step 2: Copy .tf file
----------------------
-
-You will also need to copy the .tf file of the platform you are using from `mantl/terraform/`_ to the root of the project. For example, ``mantl/terraform/openstack-modules.sample.tf`` will need to be copied to ``mantl/openstack-module-sample.tf``. The variables in the copied .tf file will need to be changed to your configuration.
-
-    .. note:: Greater than one .tf file in existance in the mantl directory will lead to errors upon deployment. If you work with more than one provider, extra .tf files will need to be renamed or moved.
-
-Step 3: Run security-setup
---------------------------
-
-You'll want set up authentication and authorization by running the ``security-setup`` script in the root directory. This will create and set passwords, authentication, and certificates. For more information, see the `security-setup`_ documentation.
-
-Step 4: Set up DNS records
---------------------------
-
-You can set up your DNS records with Terraform: `dns.rst`_
-
-Provisioning Cloud Hosts
->>>>>>>>>>>>>>>>>>>>>>>>
-
-Here are some guides specific to each of the common platforms that mantl supports:
-=======
 
 Your hosts will have to be accessible with your SSH key. If you're unfamiliar
-<<<<<<< HEAD
-with SSH keys, please read `DigitalOcean's guide to setting up SSH keys <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_.
-=======
 with SSH keys, please read `DigitalOcean's guide to setting up SSH keys
 <https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2>`_.
->>>>>>> docs/getstartedit
 
 There are several preparatory steps to provisioning the cloud hosts that are
 common to all providers:
@@ -104,11 +50,7 @@ need to be changed to your configuration.
 
     More than one .tf file in the mantl directory will lead to errors upon
     deployment. Since Mantl initially does not support multiple datacenters, extra .tf files will
-<<<<<<< HEAD
-    need to be renamed or moved. If you like to add multiple datacenters see the `Consul docs`_ for more information.
-=======
  +    need to be renamed or moved. If you would like to add multiple datacenters see the `Consul docs`_ for more information.
->>>>>>> docs/getstartedit
 
 Step 2: Run security-setup
 --------------------------
@@ -126,7 +68,6 @@ Provisioning Cloud Hosts
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Here are some guides specific to each of the platforms that Mantl supports:
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 
 - `openstack.rst`_
 - `gce.rst`_
@@ -143,10 +84,6 @@ Deploying software via Ansible
           can add an extra variable to the following commands, e.g.
           ``ansible -e ansible_python_interpreter=/path/to/python2``.
 
-<<<<<<< HEAD
-The following steps assume that you have provisioned your cloud host by taking the steps listed in one of the guides listed above. We're going to assume you deployed hosts using
-Terraform (all the way through terraform apply).
-=======
 The following steps assume that you have provisioned your cloud host by taking
 the steps listed in one of the guides above.
 
@@ -154,15 +91,9 @@ This project ships with a dynamic inventory file to read Terraform ``.tfstate``
 files, `terraform.py`_.  If you are not running Ansible from the root directory
 or would like to use a custom inventory file, you can use the ``-i`` argument
 of ``ansible`` or ``ansible-playbook`` to specify the inventory file path.
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 
-This project ships with a dynamic inventory file to read Terraform``.tfstate`` files. The steps below include the inventory file, but if you are running ansible from the root directory of the project and leave out the ``-i`` argument, this inventory file will be used by default. If you are not running ansible from the root directory, or would like to use a custom inventory file, you can use the ``-i`` argument of ``ansible`` or ``ansible-playbook`` to specify the inventory file path.
+.. code-block:: shell
 
-<<<<<<< HEAD
-For example:
-
-    .. code-block:: shell
-=======
        ansible-playbook -i path/to/inventory -e @security.yml mantl.yml
 
 Steps to deploying via Ansible:
@@ -174,20 +105,7 @@ Step 1: Add password to the ssh-agent
 For the next steps, you may want to `add your password to the ssh-agent
 <https://wiki.archlinux.org/index.php?title=SSH_keys&redirect=no#SSH_agents>`_
 avoid re-entering your password.
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 
-<<<<<<< HEAD
-       ansible-playbook -i path/to/inventory -e @security.yml mantl.yml
-
-<<<<<<< HEAD
-Steps to deploying via ansible:
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
-Step 1: Add password to the ssh-agent
--------------------------------------
-
-=======
->>>>>>> docs/getstartedit
 Step 2: Ping the servers to ensure they are reachable via ssh
 -------------------------------------------------------------
 
@@ -202,45 +120,9 @@ more detail.
 
 Step 3: Upgrade packages
 ------------------------
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 
-For the next steps, you may want to add your password to the ssh-agent to maintain a continuous login with your host.
+.. warning::
 
-<<<<<<< HEAD
-One way to do this:
-
-    .. code-block:: shell
-
-        eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
-
-    You will be prompted for you host login password.
-
-Step 2: Ping the servers to ensure they are reachable via ssh
--------------------------------------------------------------
-
-    .. code-block:: shell
-
-        ansible all -i plugins/inventory/terraform.py -m ping
-
-   It may take a few minutes after terraform for the servers to be reachable. If any servers fail to connect, you can check your connection by adding ``-vvvv`` for verbose SSH debugging to view the errors in more detail.
-
-Step 3: Upgrade packages
-------------------------
-
-    .. warning::
-
-        Due to updated packages in the recent CentOS-7 (1511) release, it is critical
-        that you upgrade operating system packages on all server before proceeding
-        with deployment:
-
-    .. code-block:: shell
-
-        ansible-playbook playbooks/upgrade-packages.yml
-
-   If you neglect to upgrade packages, you will likely experience multiple
-   failures, particularly around Consul. See issues `907`_ and
-   `927`_ for more details.
-=======
         Due to updated packages in the recent CentOS 7 (1511) release, it is
         critical that you upgrade operating system packages on all servers
         before proceeding with the deployment:
@@ -263,24 +145,12 @@ want to make is changing ``consul_acl_datacenter`` to your preferred ACL
 datacenter. If you only have one datacenter, you can remove this variable.
 
 Next, assuming you've placed the filled-out template at ``mantl.yml``:
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 
-Step 4: Deploy the software
----------------------------
+.. code-block:: shell
 
-<<<<<<< HEAD
-   First, you will need to customize a playbook. A sample can be found at ``sample.yml`` in the root directory which you can copy to ``mantl.yml``. You can find more about customizing this at `playbooks`_. The main change you'll want to make is changing ``consul_acl_datacenter`` to your preferred ACL datacenter. If you only have one datacenter, you can remove this variable.
-=======
         ansible-playbook -e @security.yml mantl.yml
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 
-   Next, assuming you've placed the filled-out template at ``mantl.yml``:
-
-    .. code-block:: shell
-
-        ansible-playbook -i plugins/inventory/terraform.py -e @security.yml mantl.yml
-
-    The deployment will probably take a while as all tasks are completed.
+The deployment will probably take a while as all tasks are completed.
 
 Checking your deployment
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -333,11 +203,7 @@ Below are guides customizing your deployment:
 .. _generated dynamically: http://docs.ansible.com/intro_dynamic_inventory.html
 .. _Terraform downloads: https://www.terraform.io/downloads.html
 .. _inventory file: http://docs.ansible.com/intro_inventory.html
-<<<<<<< HEAD
-.. _Dynamic inventory for Terraform.py: https://github.com/CiscoCloud/mantl/blob/master/plugins/inventory/terraform.py
-=======
 .. _terraform.py: https://github.com/CiscoCloud/mantl/blob/master/plugins/inventory/terraform.py
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
 .. _sample.yml: https://github.com/CiscoCloud/mantl/blob/master/sample.yml
 .. _playbooks: http://docs.ansible.com/ansible/playbooks.html
 .. _Ansible docs: http://docs.ansible.com/ansible/
@@ -368,16 +234,12 @@ Restarting your deployment
 To restart your deployment and make sure all components are restarted and
 working correctly, use the ``playbooks/reboot-hosts.yml`` playbook.
 
-    .. code-block:: shell
+.. code-block:: shell
 
         ansible-playbook playbooks/reboot-hosts.yml
 
 Using a Docker Container to Provision your Cluster
 ---------------------------------------------------
 
-<<<<<<< HEAD
-You can also provision your cluster by running a docker container. See `dockerfile.rst`_ for more information.
-=======
 You can also provision your cluster by running a docker container. See
 `dockerfile.rst`_ for more information.
->>>>>>> 1bc04be68fa57706c748f3a5feecda1b54181be9
