@@ -20,7 +20,6 @@
   vars:
     consul_dns_domain: consul
   roles:
-    - calico
     - kubernetes
     - kubernetes-node
 
@@ -30,7 +29,6 @@
     consul_dns_domain: consul
     glusterfs_mode: server
   roles:
-    - calico
     - kubernetes
     - kubernetes-master
     - kubernetes-addons
