@@ -14,7 +14,7 @@ install: "pip install -r requirements.txt"
 before_script:
   - python2 testing/test-health-checks.py
   - if [ "$TERRAFORM_FILE" != "OPENSTACK" ]; then ssh-keygen -N '' -f ~/.ssh/id_rsa; else echo $OS_KEY > ~/.ssh/id_rsa; chmod 400 ~/.ssh/id_rsa; fi
-  - eval $(ssh-agent) && ssh-add ~/.ssh/id_rsa
+  - eval $(ssh-agent) && ssh-add < /dev/null
   - if [ "$TERRAFORM_FILE" == "OPENSTACK" ]; then ssh-keyscan $OS_IP; fi
   - if [ "$ANSIBLE_PLAYBOOK" != "OPENSTACK" ]; then ln -sf $ANSIBLE_PLAYBOOK terraform.yml; fi
   - if [ "$TERRAFORM_FILE" != "OPENSTACK" ]; then ln -sf $TERRAFORM_FILE terraform.tf; fi
