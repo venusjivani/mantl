@@ -1,6 +1,7 @@
 ---
 # Include mesos vars so that we can access the zk information in the json file
-- include_vars: "{{ playbook_dir }}/../roles/mesos/defaults/main.yml"
+# VJ Fixing main.yml path
+- include_vars: "{{ playbook_dir }}/roles/mesos/defaults/main.yml"
 
 - name: create json files for jobs
   sudo: yes

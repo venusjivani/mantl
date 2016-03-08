@@ -1,0 +1,13 @@
+users:
+   - name: venus.jivani
+     enabled: 1
+     pubkeys:
+       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNqfplLdu4MBxZy/HbY7uLrsx6Dm3qS3bhp8T12qtZiakadBaweC/E8hR2ctMP7oWg5zp9YtiYH7I5h1ky69+NT3r+bk3XHhaHG90L8Ju/wVew3NelnJVEdmFJKudKRfALWAeHjQUd4hFrw+b5EvRunUY0WrDmUlkbv4fu9tJouUeRBCcHoLu+QjOc4d9lMphz0GGP+AHbMnvo8Pb6wp64sBPc493nh7w9cmWNQa5awhhWx7TDSd8fPDVD6dHq+saZlNnxg1b1AGzovqW29KiHwawqLaH5sRPH+JS10zi01KQxmlcQ6mxoEZ/xYvZJ2I7tDTrC7b7VzSR0twrod6XR venus.jivani@VJs-Macbook.ishisystems.com
+   - name: chintan.sheth
+     enabled: 1
+     pubkeys:
+       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxkErOXnMa9ZxT3GxrubWN9ZnemtO99LIg3hzgPqDmfOtOHGT28cO2L/h/UfJzu5LUTNIzgiKAa+odFsl7vLIY7sMDJUg95kaKIOxu8pJyIY9P2xIoOJOUakD+LXbrlXDSWBaYIhQpSkwxtFxTgaWIgB3wepwYd4OoFAvH9fRggw4XBcjIsnGSILyVB4dYPlQPURykUAe4gq309gRGe25xU+IHAUdd89KGGAPOvEte3cbZcHov2s5N342VZNkA8wBKqQkZ7AK/Ew8vp/TiQbxjA+RLvKEEKoJIm3Xhr8vDv7hUimju4VQuoJmkanc9+n5fij6enn9Sv3IcWzsnMr/l chintan.sheth@ishiahm-dt112
+   - name: sumit.suthar
+     enabled: 1
+     pubkeys:
+       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDVMRaQ+JpXcpYzeZmY/PAZyaqCf/0J1M7h/H7ho9E709XuqJcote7gbA/YlhhnoZYBZErfjtQOpt5Q56RnhKIsJNs7E2NK8Wnd7G745UrG/WU9BDft8w1VWcBIT6CIvoUzSR0Om0X2mpFwNd8Lrrkhfwiy+SR5D5mpNagHMfg5F/C3N04hoUAk6KW4Fhwy83L8tck+uEoXYtjtEMWCtoN2/KPcngLkOgKxpJoUAy5fdxkKy3UC/JlBKxW3UpR4KpCnnRUUL03tXf6JKpke+fBE0gYL8wfyI0jz1Xd9V5AqFttwa4OLhk3Naj8jmR3S/uLX0KctrxxCc9GcKdyehIqZ sumit.suthar@ishiahm-dt107

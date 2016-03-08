@@ -18,6 +18,13 @@
   tags:
     - common
 
+#requirs yum-utils for yum-config-manager
+- name: install yum-utils
+  sudo: yes
+  yum:
+    name: yum-utils
+    state: latest
+
 - name: increase timeouts in YUM
   sudo: yes
   shell: "yum-config-manager --save --setopt {{ item.option }}={{ item.value }}"
